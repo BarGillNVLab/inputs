@@ -2530,7 +2530,7 @@ class InputDevice(object):  # pylint: disable=useless-object-inheritance
 
             self.__pipe, child_conn = Pipe(duplex=False)
             self._listener = Process(target=target_function,
-                                     args=(child_conn,), daemon=True)
+                                     args=(child_conn,))
             self._listener.start()
         return self.__pipe
 
@@ -3167,6 +3167,9 @@ class DeviceManager(object):  # pylint: disable=useless-object-inheritance
     # pylint: disable=too-many-instance-attributes
 
     def __init__(self):
+        self.refresh()
+
+    def refresh(self):
         self.codes = {key: dict(value) for key, value in EVENT_MAP}
         self._raw = []
         self.keyboards = []
@@ -3185,7 +3188,10 @@ class DeviceManager(object):  # pylint: disable=useless-object-inheritance
                 'otherhid': 0,
                 'unknown': 0
             }
-        self._post_init()
+        try:
+            self._post_init()
+        except:
+            pass
 
     def _post_init(self):
         """Call the find devices method for the relevant platform."""

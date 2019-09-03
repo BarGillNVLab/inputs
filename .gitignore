@@ -8,7 +8,7 @@ __pycache__/
 
 # Editor state files
 *~
-
+.idea/
 # Distribution / packaging
 .Python
 env/
